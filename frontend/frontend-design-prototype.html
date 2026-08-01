@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Design Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #1B120C;
+    --bg-soft: #241811;
+    --surface: #2E2015;
+    --surface-2: #372716;
+    --accent: #C9974A;
+    --accent-soft: #E8C79A;
+    --text: #F3E7D8;
+    --text-muted: #B39C86;
+    --border: #4A3626;
+    --glow: radial-gradient(circle at 50% 35%, rgba(201,151,74,0.35), rgba(201,151,74,0) 60%);
+  }
+  [data-theme="light"] {
+    --bg: #F6EEE0;
+    --bg-soft: #EFE1C6;
+    --surface: #FFFBF3;
+    --surface-2: #FBF1DF;
+    --accent: #B87C33;
+    --accent-soft: #8C5A21;
+    --text: #2A1C14;
+    --text-muted: #7A6852;
+    --border: #E1CDA8;
+    --glow: radial-gradient(circle at 50% 35%, rgba(184,124,51,0.18), rgba(184,124,51,0) 60%);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    margin: 0;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+  .font-display { font-family: 'Fraunces', serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  section { border-top: 1px solid var(--border); }
+  section:first-of-type { border-top: none; }
+
+  /* Navbar */
+  #navbar {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    background: color-mix(in srgb, var(--bg) 55%, transparent);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-link { color: var(--text-muted); font-size: 0.9rem; transition: color 0.25s ease; position: relative; }
+  .nav-link:hover { color: var(--text); }
+  .nav-link::after {
+    content: ''; position: absolute; left: 0; bottom: -4px; height: 1px; width: 0%;
+    background: var(--accent); transition: width 0.25s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  .icon-btn {
+    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); border-radius: 999px; color: var(--text-muted);
+    transition: all 0.25s ease; cursor: pointer; background: transparent;
+  }
+  .icon-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* Hero */
+  .hero-glow {
+    position: absolute; inset: 0; background: var(--glow); filter: blur(10px);
+    animation: pulse-glow 6s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.75; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.06); }
+  }
+  .portrait-frame {
+    position: relative; width: 320px; height: 400px; margin: 0 auto;
+  }
+  .portrait-mask {
+    position: relative; width: 100%; height: 100%; overflow: hidden;
+    border-radius: 46% 54% 58% 42% / 54% 42% 58% 46%;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .portrait-mask img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+  [data-theme="dark"] .portrait-mask img,
+  :root .portrait-mask img { filter: sepia(12%) saturate(115%) brightness(0.95); }
+  .grain-line { width: 40px; height: 1px; background: var(--accent); }
+
+  /* Buttons */
+  .btn-primary {
+    background: var(--accent); color: var(--bg); font-weight: 600; padding: 0.75rem 1.7rem;
+    border-radius: 999px; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--accent-soft); transform: translateY(-2px); }
+  .btn-ghost {
+    border: 1px solid var(--border); color: var(--text); padding: 0.75rem 1.7rem; border-radius: 999px;
+    transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Cards */
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); }
+
+  /* Certificate card (reference-style) */
+  .cert-card { overflow: hidden; }
+  .cert-preview {
+    background: var(--surface-2); aspect-ratio: 4/3; margin: 0.75rem; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .cert-preview img { width: 100%; height: 100%; object-fit: cover; }
+  .btn-view {
+    width: calc(100% - 1.5rem); margin: 0 0.75rem 0.75rem; background: var(--surface-2);
+    border: 1px solid var(--border); border-radius: 999px; padding: 0.65rem; text-align: center;
+    font-size: 0.85rem; color: var(--text); display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+    transition: all 0.25s ease;
+  }
+  .btn-view:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Account row (reference-style) */
+  .account-row { border-top: 1px solid var(--border); }
+  .account-row:first-child { border-top: none; }
+  .account-index { font-family: 'Fraunces', serif; font-size: 3rem; color: var(--border); line-height: 1; }
+  .account-icon {
+    width: 46px; height: 46px; border-radius: 50%; background: var(--surface);
+    border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--accent);
+  }
+  .pill-tag {
+    font-size: 0.72rem; padding: 0.3rem 0.75rem; border-radius: 999px;
+    background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
+  }
+
+  /* Timeline */
+  .timeline-line { position: absolute; left: 7px; top: 6px; bottom: 6px; width: 1px; background: var(--border); }
+  .timeline-dot {
+    width: 15px; height: 15px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent);
+    position: relative; z-index: 1; flex-shrink: 0;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; padding: 0.25rem 0.6rem;
+    border: 1px solid var(--border); border-radius: 999px; color: var(--text-muted);
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+</style>
+</head>
+<body data-theme="dark">
+
+<!-- NAVBAR -->
+<nav id="navbar" class="px-6 md:px-10">
+  <div class="max-w-6xl mx-auto flex items-center justify-between h-16">
+    <a href="#home" class="font-display text-lg font-semibold tracking-tight">Fransciesco<span style="color:var(--accent)">.</span></a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#home" class="nav-link">Home</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#certificates" class="nav-link">Certificates</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#accounts" class="nav-link">Accounts</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <button id="langToggle" class="icon-btn font-mono text-xs">EN</button>
+      <button id="themeToggle" class="icon-btn">
+        <svg id="iconMoon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="relative px-6 md:px-10 py-20 md:py-28 overflow-hidden">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-14 items-center">
+    <div>
+      <p class="eyebrow mb-4">Full-Stack Developer — Surabaya, ID</p>
+      <h1 class="font-display text-5xl md:text-6xl leading-[1.05] font-medium">
+        Membangun produk digital dengan <span style="color:var(--accent)" class="italic">detail</span> &amp; ketelitian.
+      </h1>
+      <p class="mt-6 text-lg max-w-md" style="color:var(--text-muted)">
+        React, FastAPI, dan PostgreSQL — merancang sistem dari database hingga antarmuka yang enak dipakai.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href="#experience" class="btn-primary">Lihat Pengalaman →</a>
+        <a href="#accounts" class="btn-ghost">Hubungi Saya</a>
+      </div>
+    </div>
+    <div class="relative flex justify-center">
+      <div class="hero-glow"></div>
+      <div class="portrait-frame">
+        <div class="portrait-mask">
+          <img src="assets/profile-photo.png" alt="Foto profil">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="px-6 md:px-10 py-20 md:py-28" style="background:var(--bg-soft)">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-[0.9fr_1.3fr] gap-14 items-start">
+    <div>
+      <div class="rounded-[20px] overflow-hidden" style="aspect-ratio:4/5;">
+        <img src="assets/profile-photo.png" alt="Foto profil" class="w-full h-full object-cover" style="object-position:center 15%; filter:sepia(12%) saturate(115%) brightness(0.95);">
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow mb-4">01 — About</p>
+      <h2 class="font-display text-4xl font-medium leading-tight mb-6">Latar belakang &amp; cara kerja saya.</h2>
+      <div class="grain-line mb-6"></div>
+    <div class="space-y-6" style="color:var(--text-muted)">
+      <p class="text-lg leading-relaxed">
+        Saya seorang pengembang full-stack yang berfokus pada arsitektur yang rapi dan pengalaman pengguna yang jelas.
+        Suka membongkar sistem sampai ke detail terkecil — dari skema database sampai transisi antarmuka.
+      </p>
+      <p class="leading-relaxed">
+        Saat ini aktif memperdalam React, Docker, dan PostgreSQL lewat proyek nyata, bukan sekadar tutorial.
+      </p>
+      <div class="flex flex-wrap gap-2 pt-2">
+        <span class="tag">React</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Tailwind CSS</span>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section id="certificates" class="px-6 md:px-10 py-20 md:py-28">
+  <div class="max-w-6xl mx-auto">
+    <p class="eyebrow mb-4">02 — Certificates</p>
+    <h2 class="font-display text-4xl font-medium mb-12">Sertifikasi &amp; pembelajaran formal.</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="card cert-card">
+        <div class="cert-preview">
+          <span class="font-mono text-xs" style="color:var(--text-muted)">preview sertifikat</span>
+        </div>
+        <div class="px-5 pb-2">
+          <h3 class="font-display text-lg font-medium mb-1">Nama Sertifikat</h3>
+          <p class="text-sm font-mono mb-4" style="color:var(--text-muted)">Penerbit · 2025</p>
+        </div>
+        <button class="btn-view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          View &amp; Zoom
+        </button>
+      </div>
+      <div class="card cert-card">
+        <div class="cert-preview">
+          <span class="font-mono text-xs" style="color:var(--text-muted)">preview sertifikat</span>
+        </div>
+        <div class="px-5 pb-2">
+          <h3 class="font-display text-lg font-medium mb-1">Nama Sertifikat</h3>
+          <p class="text-sm font-mono mb-4" style="color:var(--text-muted)">Penerbit · 2025</p>
+        </div>
+        <button class="btn-view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          View &amp; Zoom
+        </button>
+      </div>
+      <div class="card cert-card">
+        <div class="cert-preview">
+          <span class="font-mono text-xs" style="color:var(--text-muted)">preview sertifikat</span>
+        </div>
+        <div class="px-5 pb-2">
+          <h3 class="font-display text-lg font-medium mb-1">Nama Sertifikat</h3>
+          <p class="text-sm font-mono mb-4" style="color:var(--text-muted)">Penerbit · 2025</p>
+        </div>
+        <button class="btn-view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          View &amp; Zoom
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="px-6 md:px-10 py-20 md:py-28" style="background:var(--bg-soft)">
+  <div class="max-w-6xl mx-auto">
+    <p class="eyebrow mb-4">03 — Experience</p>
+    <h2 class="font-display text-4xl font-medium mb-12">Perjalanan &amp; kontribusi.</h2>
+    <div class="relative pl-8 space-y-10 max-w-2xl">
+      <div class="timeline-line"></div>
+      <div class="flex gap-5">
+        <div class="timeline-dot mt-1"></div>
+        <div>
+          <p class="font-mono text-xs" style="color:var(--accent)">2025 — Sekarang</p>
+          <h3 class="font-display text-xl font-medium mt-1">Posisi / Peran</h3>
+          <p class="mt-2" style="color:var(--text-muted)">Deskripsi singkat kontribusi dan tanggung jawab.</p>
+          <div class="flex flex-wrap gap-2 mt-3">
+            <span class="tag">React</span>
+            <span class="tag">Node.js</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-5">
+        <div class="timeline-dot mt-1"></div>
+        <div>
+          <p class="font-mono text-xs" style="color:var(--accent)">2024</p>
+          <h3 class="font-display text-xl font-medium mt-1">Posisi / Peran</h3>
+          <p class="mt-2" style="color:var(--text-muted)">Deskripsi singkat kontribusi dan tanggung jawab.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCOUNTS -->
+<section id="accounts" class="px-6 md:px-10 py-20 md:py-28">
+  <div class="max-w-6xl mx-auto">
+    <p class="eyebrow mb-4">04 — Accounts</p>
+    <h2 class="font-display text-4xl font-medium mb-12">Mari terhubung.</h2>
+
+    <div class="account-row py-10 grid md:grid-cols-[auto_1fr] gap-8 items-center">
+      <div class="flex items-center gap-5">
+        <span class="account-index">01</span>
+        <div class="account-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 4.96 3.22 9.17 7.68 10.66.56.1.77-.24.77-.54 0-.27-.01-1-.02-1.96-3.13.68-3.79-1.5-3.79-1.5-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.4-1.22.72-1.5-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.1 1.15a10.8 10.8 0 0 1 5.66 0c2.15-1.45 3.1-1.15 3.1-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.32-2.63 5.28-5.14 5.56.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.65.78.54A11.03 11.03 0 0 0 23.02 11.5C23.02 5.24 18.27.5 12 .5z"/></svg>
+        </div>
+        <div>
+          <p class="eyebrow mb-1">Code</p>
+          <h3 class="font-display text-2xl font-medium">GitHub</h3>
+          <p class="text-sm" style="color:var(--text-muted)">@fransciesco</p>
+        </div>
+      </div>
+      <div>
+        <p class="max-w-md mb-4" style="color:var(--text-muted)">Kode sumber proyek, eksperimen, dan kontribusi open-source.</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="pill-tag">Open Source</span>
+          <span class="pill-tag">Projects</span>
+        </div>
+        <a href="#" class="text-sm font-medium inline-flex items-center gap-1" style="color:var(--accent)">Visit Profile →</a>
+      </div>
+    </div>
+
+    <div class="account-row py-10 grid md:grid-cols-[auto_1fr] gap-8 items-center">
+      <div class="flex items-center gap-5">
+        <span class="account-index">02</span>
+        <div class="account-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+        </div>
+        <div>
+          <p class="eyebrow mb-1">Professional</p>
+          <h3 class="font-display text-2xl font-medium">LinkedIn</h3>
+          <p class="text-sm" style="color:var(--text-muted)">@fransciesco</p>
+        </div>
+      </div>
+      <div>
+        <p class="max-w-md mb-4" style="color:var(--text-muted)">Riwayat karier, pengalaman kerja, dan koneksi profesional.</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="pill-tag">Career</span>
+          <span class="pill-tag">Networking</span>
+        </div>
+        <a href="#" class="text-sm font-medium inline-flex items-center gap-1" style="color:var(--accent)">Visit Profile →</a>
+      </div>
+    </div>
+
+    <div class="account-row py-10 grid md:grid-cols-[auto_1fr] gap-8 items-center">
+      <div class="flex items-center gap-5">
+        <span class="account-index">03</span>
+        <div class="account-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07zm0 5.62a4.22 4.22 0 1 0 0 8.44 4.22 4.22 0 0 0 0-8.44zm0 6.96a2.74 2.74 0 1 1 0-5.48 2.74 2.74 0 0 1 0 5.48zm5.4-7.13a.99.99 0 1 1-1.98 0 .99.99 0 0 1 1.98 0z"/></svg>
+        </div>
+        <div>
+          <p class="eyebrow mb-1">Social Media</p>
+          <h3 class="font-display text-2xl font-medium">Instagram</h3>
+          <p class="text-sm" style="color:var(--text-muted)">@fransciesco</p>
+        </div>
+      </div>
+      <div>
+        <p class="max-w-md mb-4" style="color:var(--text-muted)">Momen sehari-hari, di balik layar proyek, dan cerita visual.</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="pill-tag">Lifestyle</span>
+          <span class="pill-tag">Behind the Scenes</span>
+        </div>
+        <a href="#" class="text-sm font-medium inline-flex items-center gap-1" style="color:var(--accent)">Visit Profile →</a>
+      </div>
+    </div>
+
+    <div class="pt-10 text-center">
+      <p class="font-mono text-xs" style="color:var(--text-muted)">© 2026 Fransciesco. Built with React &amp; FastAPI.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const themeToggle = document.getElementById('themeToggle');
+  const body = document.body;
+  themeToggle.addEventListener('click', () => {
+    const next = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    body.setAttribute('data-theme', next);
+  });
+  // lang toggle is a visual stub only in this prototype
+  const langToggle = document.getElementById('langToggle');
+  langToggle.addEventListener('click', () => {
+    langToggle.textContent = langToggle.textContent === 'EN' ? 'ID' : 'EN';
+  });
+</script>
+</body>
+</html>

@@ -1,22 +1,41 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import { useHomeData } from './hooks/useHomeData';
+import { AppProvider } from './context/AppProvider';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import About from './components/About';
+import Certificates from './components/Certificates';
+import Experience from './components/Experience';
+import Accounts from './components/Accounts';
 
-function App() {
-  const [status, setStatus] = useState('checking...')
+function PortfolioApp() {
+  const { data, loading, error } = useHomeData();
 
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/health`)
-      .then(res => res.json())
-      .then(data => setStatus(data.status))
-      .catch(() => setStatus('failed to connect'))
-  }, [])
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)', color: 'var(--text)' }}>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)', color: 'var(--text)' }}>Error: {error}</div>;
+  }
 
   return (
-    <div>
-      <h1>Personal Website</h1>
-      <p>Backend status: {status}</p>
-    </div>
-  )
+    <>
+      <Navbar />
+      <Hero profile={data?.profile} />
+      <About profile={data?.profile} />
+      <Certificates certificates={data?.certificates} />
+      <Experience experiences={data?.experiences} />
+      <Accounts accounts={data?.accounts} />
+    </>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <AppProvider>
+      <PortfolioApp />
+    </AppProvider>
+  );
+}
+
+export default App;
