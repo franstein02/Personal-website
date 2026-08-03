@@ -5,7 +5,6 @@ from app.core.dependencies import get_current_admin
 from app.core.cloudinary import delete_image
 from app.models.certificate import Certificate
 from app.schemas.certificate import CertificateCreate, CertificateUpdate, CertificateResponse
-from typing import List
 
 router = APIRouter(prefix="/admin/certificates", tags=["certificates"])
 

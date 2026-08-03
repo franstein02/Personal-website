@@ -53,9 +53,23 @@
   section:first-of-type { border-top: none; }
 
   /* Navbar */
+  #navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px) saturate(140%);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
+    background: rgba(27, 18, 12, 0.45);
+    border-bottom: 1px solid transparent;
+    transition: background 0.4s ease, border-color 0.4s ease;
+  }
+  [data-theme="light"] #navbar {
+    background: rgba(246, 238, 224, 0.45);
+  }
+  
   .nav-link { 
     color: var(--text-muted); 
-    font-size: 0.9rem; 
+    font-size: 1rem; 
     transition: color 0.25s ease; 
     position: relative; 
   }

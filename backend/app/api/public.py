@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from typing import Dict, Any
 from app.db.database import get_db
 from app.models.profile import Profile
@@ -15,7 +15,7 @@ router = APIRouter(prefix="/public", tags=["public"])
 
 @router.get("/home")
 def get_home_data(db: Session = Depends(get_db)) -> Dict[str, Any]:
-    profile = db.query(Profile).first()
+    profile = db.query(Profile).options(selectinload(Profile.titles)).first()
     certificates = db.query(Certificate).order_by(Certificate.order_index).all()
     experiences = db.query(Experience).order_by(Experience.order_index).all()
     accounts = db.query(Account).order_by(Account.order_index).all()

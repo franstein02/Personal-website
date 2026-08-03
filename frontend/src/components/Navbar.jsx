@@ -6,10 +6,10 @@ const Navbar = () => {
   return (
     <nav id="navbar" className="px-6 md:px-10">
       <div className="max-w-6xl mx-auto flex items-center justify-between h-16">
-        <a href="#home" className="font-display text-lg font-semibold tracking-tight">
-          Fransciesco<span style={{ color: 'var(--accent)' }}>.</span>
+        <a href="#home" className="font-display text-2xl font-semibold tracking-tight">
+          Fransciesco Steinlie<span style={{ color: 'var(--accent)' }}>.</span>
         </a>
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-9">
           <a href="#home" className="nav-link">{t('nav_home')}</a>
           <a href="#about" className="nav-link">{t('nav_about')}</a>
           <a href="#certificates" className="nav-link">{t('nav_certificates')}</a>

@@ -1,8 +1,12 @@
 from pydantic import BaseModel
 from typing import List
 
+class LocalizedText(BaseModel):
+    id: str
+    en: str
+
 class ProfileTitleBase(BaseModel):
-    text: str
+    text: LocalizedText
     order_index: int
 
 class ProfileTitleCreate(ProfileTitleBase):
@@ -17,9 +21,9 @@ class ProfileTitleResponse(ProfileTitleBase):
 
 class ProfileBase(BaseModel):
     full_name: str
-    tagline: str
-    about_heading: str
-    about_text: str
+    tagline: LocalizedText
+    about_heading: LocalizedText
+    about_text: LocalizedText
     years_exp: int
     total_projects: int
     total_clients: int
