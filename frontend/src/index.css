@@ -108,10 +108,10 @@
 
   .cert-card { overflow: hidden; }
   .cert-preview {
-    background: var(--surface-2); aspect-ratio: 4/3; margin: 0.75rem; border-radius: 14px;
+    background: #111; aspect-ratio: 4/3; margin: 0.75rem; border-radius: 14px;
     display: flex; align-items: center; justify-content: center; overflow: hidden;
   }
-  .cert-preview img { width: 100%; height: 100%; object-fit: cover; }
+  .cert-preview img { width: 100%; height: 100%; object-fit: contain; }
   .btn-view {
     width: calc(100% - 1.5rem); margin: 0 0.75rem 0.75rem; background: var(--surface-2);
     border: 1px solid var(--border); border-radius: 999px; padding: 0.65rem; text-align: center;
