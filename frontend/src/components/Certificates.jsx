@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../context/AppProvider';
 
 const CertificateLightbox = ({ certificates, activeIndex, onClose, setIndex }) => {
@@ -97,6 +97,8 @@ const CertificateLightbox = ({ certificates, activeIndex, onClose, setIndex }) =
 const Certificates = ({ certificates }) => {
   const { t, lang } = useAppContext();
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const scrollRef = useRef(null);
+  const [activeDot, setActiveDot] = useState(0);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString(
@@ -105,43 +107,86 @@ const Certificates = ({ certificates }) => {
     );
   };
 
+  const handleScroll = () => {
+    const container = scrollRef.current;
+    if (!container || !certificates?.length) return;
+
+    const itemWidth = container.scrollWidth / certificates.length;
+    const currentIndex = Math.round(container.scrollLeft / itemWidth);
+    
+    setActiveDot(currentIndex % certificates.length);
+  };
+
   return (
     <section id="certificates" className="px-6 md:px-10 py-20 md:py-28 relative">
       <div className="max-w-6xl mx-auto">
         <p className="eyebrow mb-4">{t('cert_eyebrow')}</p>
         <h2 className="font-display text-4xl font-medium mb-12">{t('cert_headline')}</h2>
         
-        <div className="grid md:grid-cols-3 gap-6">
-          {certificates?.length > 0 ? certificates.map((cert, idx) => {
-            const sortedImages = cert.images ? [...cert.images].sort((a, b) => a.page_order - b.page_order) : [];
-            const firstImage = sortedImages.length > 0 ? sortedImages[0].image_url : null;
-            
-            return (
-              <div key={cert.id} className="card cert-card">
-                <div className="cert-preview">
-                  {firstImage ? (
-                    <img src={firstImage} alt={cert.title?.[lang] || ''} />
-                  ) : (
-                    <span className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>{t('cert_preview_text')}</span>
-                  )}
-                </div>
-                <div className="px-5 pb-2">
-                  <h3 className="font-display text-lg font-medium mb-1">{cert.title?.[lang] || ''}</h3>
-                  <p className="text-sm font-mono mb-4" style={{ color: 'var(--text-muted)' }}>
-                    {cert.issued_by?.[lang] || ''} · {formatDate(cert.issued_date)} 
-                  </p>
-                </div>
-                <button className="btn-view" onClick={() => setLightboxIndex(idx)}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="11" cy="11" r="8"/>
-                  <path d="m21 21-4.3-4.3"/>
+        <div className="relative">
+          <div 
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-4" 
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            {certificates?.length > 0 ? certificates.map((cert, idx) => {
+              const sortedImages = cert.images ? [...cert.images].sort((a, b) => a.page_order - b.page_order) : [];
+              const firstImage = sortedImages.length > 0 ? sortedImages[0].image_url : null;
+              
+              return (
+                <div key={cert.id} className="card cert-card shrink-0 snap-center w-[85vw] md:w-[320px]">
+                  <div className="cert-preview">
+                    {firstImage ? (
+                      <img src={firstImage} alt={cert.title?.[lang] || ''} />
+                    ) : (
+                      <span className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>{t('cert_preview_text')}</span>
+                    )}
+                  </div>
+                  <div className="px-5 pb-2">
+                    <h3 className="font-display text-lg font-medium mb-1">{cert.title?.[lang] || ''}</h3>
+                    <p className="text-sm font-mono mb-4" style={{ color: 'var(--text-muted)' }}>
+                      {cert.issued_by?.[lang] || ''} · {formatDate(cert.issued_date)} 
+                    </p>
+                  </div>
+                  <button className="btn-view" onClick={() => setLightboxIndex(idx)}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.3-4.3"/>
+                  </svg>
+                  {t('cert_btn_view')}
+                </button>
+              </div>
+            );
+            }) : (
+              <div className="w-full text-center py-10" style={{ color: 'var(--text-muted)' }}>No certificates available.</div>
+            )}
+          </div>
+          
+          {certificates?.length > 0 && (
+            <div className="flex items-center justify-center gap-4 mt-8">
+              <button 
+                className="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-all bg-[var(--surface)]"
+                onClick={() => scrollRef.current?.scrollBy({ left: -340, behavior: 'smooth' })}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 18l-6-6 6-6" />
                 </svg>
-                {t('cert_btn_view')}
+              </button>
+              <div className="flex gap-2">
+                 {certificates.map((_, i) => (
+                    <div key={i} className={`h-2 rounded-full transition-all duration-300 ${i === activeDot ? 'bg-[var(--accent)] w-6' : 'bg-[var(--border)] w-2'}`} />
+                 ))}
+              </div>
+              <button 
+                className="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-all bg-[var(--surface)]"
+                onClick={() => scrollRef.current?.scrollBy({ left: 340, behavior: 'smooth' })}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
               </button>
             </div>
-          );
-          }) : (
-            <div className="col-span-3 text-center" style={{ color: 'var(--text-muted)' }}>No certificates available.</div>
           )}
         </div>
       </div>
