@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 from app.db.database import Base
 
@@ -8,7 +8,7 @@ class Account(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     platform = Column(String)
     username = Column(String)
-    description = Column(Text)
+    description = Column(JSON)
     profile_url = Column(String)
     order_index = Column(Integer)
 

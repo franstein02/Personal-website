@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List
+from app.schemas.profile import LocalizedText
 
 class AccountTagBase(BaseModel):
     tag: str
@@ -17,7 +18,7 @@ class AccountTagResponse(AccountTagBase):
 class AccountBase(BaseModel):
     platform: str
     username: str
-    description: str
+    description: LocalizedText
     profile_url: str
     order_index: int
 
