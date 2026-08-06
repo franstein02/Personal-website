@@ -34,22 +34,22 @@ const Accounts = ({ accounts }) => {
             
             const leftContent = (
               <div className="flex flex-col h-full justify-center">
-                <div className="relative">
-                  <span className="absolute -top-12 -left-4 text-8xl font-display font-bold opacity-5 pointer-events-none select-none">
+                <div className="flex items-center gap-6 md:gap-8">
+                  <span className="text-7xl md:text-8xl font-display font-bold opacity-10 select-none">
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <div className="flex items-center gap-4 mb-4 relative z-10">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 shrink-0">
                       {getIcon(acc.platform)}
                     </div>
                     <div>
                       <p className="eyebrow mb-1">SOCIAL MEDIA</p>
-                      <h3 className="font-display text-2xl font-medium">{acc.platform}</h3>
+                      <h3 className="font-display text-2xl font-medium leading-none mb-2">{acc.platform}</h3>
+                      <p className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>
+                        @{acc.username}
+                      </p>
                     </div>
                   </div>
-                  <p className="text-sm font-mono relative z-10" style={{ color: 'var(--text-muted)' }}>
-                    @{acc.username}
-                  </p>
                 </div>
               </div>
             );
@@ -78,17 +78,16 @@ const Accounts = ({ accounts }) => {
                   href={acc.profile_url} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="inline-flex items-center gap-2 font-medium group transition-colors"
+                  className="inline-flex items-center gap-2 font-medium group transition-colors hover:opacity-80"
                   style={{ color: 'var(--accent)' }}
                 >
                   {t('acc_visit')}
-                  <span className="transform transition-transform group-hover:translate-x-1">→</span>
                 </a>
               </div>
             );
 
             return (
-              <div key={acc.id} className="py-16 border-b border-gray-200 dark:border-gray-800 last:border-0 relative">
+              <div key={acc.id} className="py-16 border-b last:border-0" style={{ borderColor: 'var(--border)' }}>
                 <div className="grid md:grid-cols-2 gap-8 md:gap-16">
                   {/* On mobile, leftContent is always on top. On desktop, it alternates */}
                   <div className={`order-1 ${isEven ? 'md:order-2' : 'md:order-1'}`}>

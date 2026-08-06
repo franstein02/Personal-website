@@ -7,6 +7,7 @@ class Account(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     platform = Column(String)
+    category = Column(String)
     username = Column(String)
     description = Column(JSON)
     profile_url = Column(String)
