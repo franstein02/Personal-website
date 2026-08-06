@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, Text, JSON, ForeignKey
 from sqlalchemy.orm import relationship
 from app.db.database import Base
 
@@ -11,7 +11,7 @@ class Experience(Base):
     employment_type = Column(String)
     start_date = Column(Date)
     end_date = Column(Date, nullable=True)
-    description = Column(Text)
+    description = Column(JSON)
     order_index = Column(Integer)
 
     tags = relationship("ExperienceTag", back_populates="experience", cascade="all, delete-orphan")

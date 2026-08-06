@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import date
+from app.schemas.profile import LocalizedText
 
 class ExperienceTagBase(BaseModel):
     tag: str
@@ -21,7 +22,7 @@ class ExperienceBase(BaseModel):
     employment_type: str
     start_date: date
     end_date: Optional[date] = None
-    description: str
+    description: LocalizedText
     order_index: int
 
 class ExperienceCreate(ExperienceBase):
