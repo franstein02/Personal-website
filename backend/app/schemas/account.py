@@ -17,6 +17,7 @@ class AccountTagResponse(AccountTagBase):
 
 class AccountBase(BaseModel):
     platform: str
+    category: str
     username: str
     description: LocalizedText
     profile_url: str

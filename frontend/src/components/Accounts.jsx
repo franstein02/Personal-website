@@ -13,13 +13,13 @@ const getIcon = (platform) => {
 };
 
 const Accounts = ({ accounts }) => {
-  const { t, language } = useAppContext();
+  const { t, lang } = useAppContext();
 
   // Helper to get localized text
   const getLocalized = (textObj) => {
     if (!textObj) return '';
     if (typeof textObj === 'string') return textObj;
-    return textObj[language] || textObj['en'] || '';
+    return textObj[lang] || textObj['en'] || '';
   };
 
   return (
@@ -43,10 +43,10 @@ const Accounts = ({ accounts }) => {
                       {getIcon(acc.platform)}
                     </div>
                     <div>
-                      <p className="eyebrow mb-1">SOCIAL MEDIA</p>
+                      <p className="eyebrow mb-1">{acc.category || 'SOCIAL MEDIA'}</p>
                       <h3 className="font-display text-2xl font-medium leading-none mb-2">{acc.platform}</h3>
                       <p className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>
-                        @{acc.username}
+                        {acc.category === 'SOCIAL MEDIA' ? `@${acc.username}` : acc.username}
                       </p>
                     </div>
                   </div>
