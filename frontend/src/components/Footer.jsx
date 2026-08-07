@@ -30,8 +30,8 @@ const Footer = ({ profile }) => {
   const location = profile?.location || '';
 
   return (
-    <footer className="relative border-t" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-soft)' }}>
-      <div className="max-w-6xl mx-auto px-6 md:px-10 py-16">
+    <footer className="relative border-t px-6 md:px-10" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-soft)' }}>
+      <div className="max-w-6xl mx-auto py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8">
           
           {/* Left Section */}
