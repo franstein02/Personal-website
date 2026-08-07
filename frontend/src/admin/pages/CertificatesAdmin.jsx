@@ -216,7 +216,6 @@ const CertificatesAdmin = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {certificates.map((cert) => {
             const thumbnail = cert.images?.sort((a, b) => a.page_order - b.page_order)[0]?.image_url;
-            
             return (
               <div 
                 key={cert.id}
