@@ -28,9 +28,12 @@ def update_certificate(cert_id: int, cert_in: CertificateUpdate, db: Session = D
     if not certificate:
         raise HTTPException(status_code=404, detail="Certificate not found")
         
-    # Check if image was replaced
+    # Determine which images are being kept
+    incoming_public_ids = [img.public_id for img in cert_in.images if img.public_id]
+    
+    # Check if image was removed and delete from Cloudinary
     for old_img in certificate.images:
-        if old_img.public_id:
+        if old_img.public_id and old_img.public_id not in incoming_public_ids:
             delete_image(old_img.public_id)
             
     certificate.images.clear()

@@ -15,6 +15,7 @@ import AdminLayout from './admin/components/AdminLayout';
 import Login from './admin/pages/Login';
 import Dashboard from './admin/pages/Dashboard';
 import ProfileAdmin from './admin/pages/ProfileAdmin';
+import CertificatesAdmin from './admin/pages/CertificatesAdmin';
 
 function PortfolioApp() {
   const { data, loading, error } = useHomeData();
@@ -55,7 +56,7 @@ function App() {
               </ProtectedRoute>
             }>
               <Route path="profile" element={<ProfileAdmin />} />
-              <Route path="certificates" element={<Dashboard />} />
+              <Route path="certificates" element={<CertificatesAdmin />} />
               <Route path="experiences" element={<Dashboard />} />
               <Route path="accounts" element={<Dashboard />} />
               <Route path="*" element={<Dashboard />} />
