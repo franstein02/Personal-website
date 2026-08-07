@@ -16,6 +16,7 @@ class Profile(Base):
     total_clients = Column(Integer)
     photo_url = Column(String)
     email = Column(String)
+    location = Column(String)
 
     titles = relationship("ProfileTitle", back_populates="profile", cascade="all, delete-orphan", order_by="ProfileTitle.order_index")
 

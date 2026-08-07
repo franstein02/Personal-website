@@ -6,6 +6,7 @@ import About from './components/About';
 import Certificates from './components/Certificates';
 import Experience from './components/Experience';
 import Accounts from './components/Accounts';
+import Footer from './components/Footer';
 
 function PortfolioApp() {
   const { data, loading, error } = useHomeData();
@@ -26,6 +27,7 @@ function PortfolioApp() {
       <Certificates certificates={data?.certificates} />
       <Experience experiences={data?.experiences} />
       <Accounts accounts={data?.accounts} />
+      <Footer profile={data?.profile} />
     </>
   );
 }

@@ -103,10 +103,6 @@ const Accounts = ({ accounts }) => {
             <div className="py-10" style={{ color: 'var(--text-muted)' }}>No accounts available.</div>
           )}
         </div>
-
-        <div className="pt-16 text-center">
-          <p className="font-mono text-xs" style={{ color: 'var(--text-muted)' }}>{t('footer_text')}</p>
-        </div>
       </div>
     </section>
   );

@@ -29,6 +29,7 @@ class ProfileBase(BaseModel):
     total_clients: int
     photo_url: str
     email: str
+    location: str | None = None
 
 class ProfileUpdate(ProfileBase):
     titles: List[ProfileTitleBase]

@@ -3,6 +3,14 @@ import { useAppContext } from '../context/AppProvider';
 
 const CertificateLightbox = ({ certificates, activeIndex, onClose, setIndex }) => {
   const { lang } = useAppContext();
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   if (activeIndex === null) return null;
   const cert = certificates[activeIndex];
   
@@ -17,14 +25,6 @@ const CertificateLightbox = ({ certificates, activeIndex, onClose, setIndex }) =
     e.stopPropagation();
     setIndex(activeIndex === certificates.length - 1 ? 0 : activeIndex + 1);
   };
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
 
   return (
     <div 
@@ -150,15 +150,6 @@ const Certificates = ({ certificates }) => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  // Auto-slide
-  useEffect(() => {
-    if (!isCarousel || isPaused || !isVisible) return;
-    const timer = setInterval(() => {
-      handleNext();
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [isCarousel, isPaused, isVisible, currentIndex, isClickLocked]);
-
   const handleNext = () => {
     if (!isCarousel || isClickLocked) return;
     setIsTransitioning(true);
@@ -174,6 +165,16 @@ const Certificates = ({ certificates }) => {
     setIsClickLocked(true);
     setTimeout(() => setIsClickLocked(false), 500);
   };
+
+  // Auto-slide
+  useEffect(() => {
+    if (!isCarousel || isPaused || !isVisible) return;
+    const timer = setInterval(() => {
+      handleNext();
+    }, 4000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCarousel, isPaused, isVisible, currentIndex, isClickLocked]);
 
   const handleDotClick = (dotIdx) => {
     if (!isCarousel || isClickLocked) return;
@@ -213,7 +214,7 @@ const Certificates = ({ certificates }) => {
     dragDelta.current = clientX - dragStartX;
   };
 
-  const handleDragEnd = (e) => {
+  const handleDragEnd = () => {
     if (!isDragging) return;
     setIsDragging(false);
     setIsTransitioning(true);

@@ -19,7 +19,10 @@
     "acc_eyebrow": "04 — Accounts",
     "acc_headline": "Let's connect.",
     "acc_visit": "Visit Profile →",
-    "footer_text": "© 2026 Fransciesco. Built with React & FastAPI."
+    "based_in": "based in",
+    "get_in_touch": "Get In Touch",
+    "footer_email": "EMAIL",
+    "footer_location": "LOCATION"
   },
   "id": {
     "nav_home": "Home",
@@ -41,6 +44,9 @@
     "acc_eyebrow": "04 — Accounts",
     "acc_headline": "Mari terhubung.",
     "acc_visit": "Visit Profile →",
-    "footer_text": "© 2026 Fransciesco. Built with React & FastAPI."
+    "based_in": "berbasis di",
+    "get_in_touch": "Hubungi Saya",
+    "footer_email": "EMAIL",
+    "footer_location": "LOKASI"
   }
 }
