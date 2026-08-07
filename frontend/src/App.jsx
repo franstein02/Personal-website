@@ -8,6 +8,13 @@ import Experience from './components/Experience';
 import Accounts from './components/Accounts';
 import Footer from './components/Footer';
 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AdminAuthProvider } from './admin/context/AdminAuthContext';
+import ProtectedRoute from './admin/components/ProtectedRoute';
+import AdminLayout from './admin/components/AdminLayout';
+import Login from './admin/pages/Login';
+import Dashboard from './admin/pages/Dashboard';
+
 function PortfolioApp() {
   const { data, loading, error } = useHomeData();
 
@@ -35,7 +42,25 @@ function PortfolioApp() {
 function App() {
   return (
     <AppProvider>
-      <PortfolioApp />
+      <AdminAuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<PortfolioApp />} />
+            <Route path="/admin/login" element={<Login />} />
+            <Route path="/admin/*" element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }>
+              <Route path="profile" element={<Dashboard />} />
+              <Route path="certificates" element={<Dashboard />} />
+              <Route path="experiences" element={<Dashboard />} />
+              <Route path="accounts" element={<Dashboard />} />
+              <Route path="*" element={<Dashboard />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AdminAuthProvider>
     </AppProvider>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAppContext } from '../context/AppProvider';
+import { Link } from 'react-router-dom';
 import { FiMail, FiMapPin, FiChevronUp } from 'react-icons/fi';
 
 const Footer = ({ profile }) => {
@@ -94,9 +95,9 @@ const Footer = ({ profile }) => {
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
             © 2026 {fullName}. All rights reserved.
           </p>
-          <a href="/docs" target="_blank" rel="noreferrer" className="text-sm hover:underline" style={{ color: 'var(--text-muted)' }}>
+          <Link to="/admin/login" className="text-sm hover:underline" style={{ color: 'var(--text-muted)' }}>
             Admin
-          </a>
+          </Link>
         </div>
       </div>
 

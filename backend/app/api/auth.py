@@ -17,13 +17,13 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     if not admin:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Admin tidak ditemukan"
+            detail="Admin not found"
         )
     
     if not verify_password(request.password, admin.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Password salah"
+            detail="Wrong Password"
         )
     
     access_token = create_access_token(data={"sub": str(admin.id)})
